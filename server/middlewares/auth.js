@@ -19,15 +19,26 @@ let verificaToken = (req, res, next) => {
         req.usuario = decoded.usuario;
         next();
     });
-
-
-
-
-    // res.json({
-    //     token: token
-    // });
-
 };
+
+
+// =======================================
+// Verificar TOKEN ( Para una imagen )
+// =======================================
+
+let verificaTokenImg = (req, res, next) => {
+    let token = req.query.token;
+    jwt.verify(token, process.env.TOKEN_SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err
+            });
+        }
+        req.usuario = decoded.usuario;
+        next();
+    });
+}
 
 
 // =======================================
@@ -49,5 +60,6 @@ let canUpdate = (req, res, next) => {
 
 module.exports = {
     verificaToken,
+    verificaTokenImg,
     canUpdate
 };
